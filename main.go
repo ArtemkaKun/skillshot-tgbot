@@ -25,7 +25,7 @@ func parserLoop() {
 		new_vacancies := subtractSlices(actual_vacancies_list, previous_vacancies_list)
 
 		if len(new_vacancies) > 0 {
-			fmt.Println("New vaca")
+			fmt.Println("Vacancy update")
 			for _, one_vacancy_link := range new_vacancies {
 				vacancy_data := parser.GetVacancyData(one_vacancy_link)
 				bot.SendNewVacancy(vacancy_data)

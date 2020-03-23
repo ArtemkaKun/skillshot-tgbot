@@ -61,7 +61,7 @@ func SendNewVacancy(vacancy_data structs.VacancyData) {
 	users_ids := db.GetUsers()
 
 	for _, one_id := range users_ids {
-		msg := tgbotapi.NewMessage(one_id, fmt.Sprintf("%v\nPracowadwca: #%v\nMiejscowość: #%v\nRodzaj pracy: #%v\nTyp umowy: #%v\nLink: %v\n", vacancy_data.Title, vacancy_data.Employer, vacancy_data.WorkPlace, vacancy_data.WorkType, vacancy_data.EmploymentType, vacancy_data.Link))
+		msg := tgbotapi.NewMessage(one_id, fmt.Sprintf("%v\nPracowadwca: %v\nMiejscowość: %v\nRodzaj pracy: %v\nTyp umowy: %v\nLink: %v\n", vacancy_data.Title, vacancy_data.Employer, vacancy_data.WorkPlace, vacancy_data.WorkType, vacancy_data.EmploymentType, vacancy_data.Link))
 		_, err := bot.Send(msg)
 		if err != nil {
 			fmt.Println(err.Error())
