@@ -60,6 +60,7 @@ func GetVacancyData(vacancy_link string) (one_vacancy_data structs.VacancyData) 
 			log.Fatal(err)
 		}
 
+		one_vacancy_data.Link = full_vacancy_link
 		one_vacancy_data.Title = body_data.Find("h1").Text()
 		one_vacancy_data.Employer = body_data.Find("b a").Text()
 		one_vacancy_data.WorkPlace = getVacancyLocation(body_data.Find("p").First().Text())
@@ -73,20 +74,15 @@ func GetVacancyData(vacancy_link string) (one_vacancy_data structs.VacancyData) 
 			one_vacancy_data.EmploymentType = body_data.Find(".badge-job-inne").Text()
 		}
 
-		/*body_data.Find("td").Each(func(_ int, vacancies_table *goquery.Selection) {
-			vacancies_links := vacancies_table.Find("a")
-			for _, one_link := range vacancies_links.Nodes {
-				vacancies = append(vacancies, one_link.Attr[0].Val)
-			}
-		})*/
+		//TODO - Need to create algorithm for filtering this data
+		//one_vacancy_data.Text = getVacancyLocation(body_data.Find("p").Text())
 	}
 
-	fmt.Println(one_vacancy_data.WorkPlace)
+	fmt.Println(one_vacancy_data.Text)
 	return one_vacancy_data
 }
 
 func getVacancyLocation(unknown_location string) (location string) {
-	/*split_string := strings.Split(unknown_location, " ")*/
 	split_string := strings.Fields(unknown_location)
 
 	for i, one_word := range split_string {
