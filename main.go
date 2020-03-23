@@ -2,13 +2,17 @@ package main
 
 import (
 	"fmt"
+	"github.com/artemkakun/skillshot-tgbot/bot"
 	"github.com/artemkakun/skillshot-tgbot/parser"
-	"github.com/artemkakun/skillshot-tgbot/structs"
 	"time"
 )
 
 func main() {
+	my_bot := bot.GetBot()
+
 	go parserLoop()
+
+	bot.BotUpdateLoop(my_bot)
 }
 
 func parserLoop() {
@@ -24,7 +28,7 @@ func parserLoop() {
 			fmt.Println("New vaca")
 			for _, one_vacancy_link := range new_vacancies {
 				vacancy_data := parser.GetVacancyData(one_vacancy_link)
-				//send bot req
+				bot.SendNewVacancy(vacancy_data)
 			}
 		}
 
