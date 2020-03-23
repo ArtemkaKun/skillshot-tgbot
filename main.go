@@ -32,6 +32,8 @@ func parserLoop() {
 			}
 		}
 
+		previous_vacancies_list = append(previous_vacancies_list, actual_vacancies_list...)
+
 		time.Sleep(1 * time.Minute)
 	}
 }
