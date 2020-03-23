@@ -15,7 +15,7 @@ func init() {
 }
 
 func botStart() *tgbotapi.BotAPI {
-	bot, err := tgbotapi.NewBotAPI("1126466003:AAELrk2wtxqzuneZkbyxsZna62XsJqHEt-4")
+	bot, err := tgbotapi.NewBotAPI("")
 	if err != nil {
 		log.Panic(err)
 	}
