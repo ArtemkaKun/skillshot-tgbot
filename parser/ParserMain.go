@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/artemkakun/skillshot-tgbot/structs"
 	"log"
@@ -9,12 +8,8 @@ import (
 	"strings"
 )
 
-var siteData *http.Response
-
-func init() {
-	var err error
-
-	siteData, err = http.Get("https://www.skillshot.pl/")
+func GetVacanciesLinksList() (vacancies []string) {
+	siteData, err := http.Get("https://www.skillshot.pl/")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,9 +17,7 @@ func init() {
 	if siteData.StatusCode != 200 {
 		log.Fatalf("status code error: %d %s", siteData.StatusCode, siteData.Status)
 	}
-}
 
-func GetVacanciesLinksList() (vacancies []string) {
 	defer siteData.Body.Close()
 
 	body_data, err := goquery.NewDocumentFromReader(siteData.Body)
@@ -52,7 +45,7 @@ func GetVacancyData(vacancy_link string) (one_vacancy_data structs.VacancyData) 
 
 	defer res.Body.Close()
 
-	if siteData.StatusCode != 200 {
+	if res.StatusCode != 200 {
 		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
 	} else {
 		body_data, err := goquery.NewDocumentFromReader(res.Body)
@@ -77,8 +70,6 @@ func GetVacancyData(vacancy_link string) (one_vacancy_data structs.VacancyData) 
 		//TODO - Need to create algorithm for filtering this data
 		//one_vacancy_data.Text = getVacancyLocation(body_data.Find("p").Text())
 	}
-
-	fmt.Println(one_vacancy_data.Text)
 	return one_vacancy_data
 }
 

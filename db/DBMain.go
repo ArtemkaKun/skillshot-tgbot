@@ -10,10 +10,10 @@ import (
 const USERS_FILE = "users"
 
 func AddNewUser(user int64) {
-	users, err := os.Open(USERS_FILE + ".users")
+	users, err := os.OpenFile(USERS_FILE+".users", os.O_RDWR|os.O_APPEND, 0660)
 	if err != nil {
 		dbFileCreator()
-		users, err = os.Open(USERS_FILE + ".users")
+		users, err = os.OpenFile(USERS_FILE+".users", os.O_RDWR|os.O_APPEND, 0660)
 	}
 
 	defer users.Close()
@@ -29,7 +29,8 @@ func AddNewUser(user int64) {
 func GetUsers() (users_ids []int64) {
 	users, err := os.Open(USERS_FILE + ".users")
 	if err != nil {
-		log.Fatalf("File can't be opened; %s\n", err)
+		dbFileCreator()
+		users, err = os.Open(USERS_FILE + ".users")
 	}
 
 	defer users.Close()
@@ -45,6 +46,8 @@ func GetUsers() (users_ids []int64) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	users.Sync()
 
 	return users_ids
 }
