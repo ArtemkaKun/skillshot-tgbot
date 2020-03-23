@@ -6,6 +6,7 @@ import (
 	"github.com/artemkakun/skillshot-tgbot/structs"
 	"log"
 	"net/http"
+	"strings"
 )
 
 var siteData *http.Response
@@ -61,6 +62,17 @@ func GetVacancyData(vacancy_link string) (one_vacancy_data structs.VacancyData) 
 
 		one_vacancy_data.Title = body_data.Find("h1").Text()
 		one_vacancy_data.Employer = body_data.Find("b a").Text()
+		one_vacancy_data.WorkPlace = getVacancyLocation(body_data.Find("p").First().Text())
+		one_vacancy_data.WorkType = body_data.Find(".badge-job-category").Text()
+
+		if body_data.Find(".badge-job-stala").Text() != "" {
+			one_vacancy_data.EmploymentType = body_data.Find(".badge-job-stala").Text()
+		} else if body_data.Find(".badge-job-zlecenie").Text() != "" {
+			one_vacancy_data.EmploymentType = body_data.Find(".badge-job-zlecenie").Text()
+		} else {
+			one_vacancy_data.EmploymentType = body_data.Find(".badge-job-inne").Text()
+		}
+
 		/*body_data.Find("td").Each(func(_ int, vacancies_table *goquery.Selection) {
 			vacancies_links := vacancies_table.Find("a")
 			for _, one_link := range vacancies_links.Nodes {
@@ -69,5 +81,23 @@ func GetVacancyData(vacancy_link string) (one_vacancy_data structs.VacancyData) 
 		})*/
 	}
 
+	fmt.Println(one_vacancy_data.WorkPlace)
 	return one_vacancy_data
+}
+
+func getVacancyLocation(unknown_location string) (location string) {
+	/*split_string := strings.Split(unknown_location, " ")*/
+	split_string := strings.Fields(unknown_location)
+
+	for i, one_word := range split_string {
+		if one_word == "w" {
+			location_buffer := split_string[i+1:]
+
+			for _, one_location_word := range location_buffer {
+				location += one_location_word + " "
+			}
+		}
+	}
+
+	return location
 }
