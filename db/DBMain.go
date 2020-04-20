@@ -18,7 +18,7 @@ func AddNewUser(user int64) {
 
 	defer users.Close()
 
-	_, err = users.WriteString(strconv.FormatInt(user, 10))
+	_, err = users.WriteString(strconv.FormatInt(user, 10) + "\n")
 	if err != nil {
 		log.Fatalf("File can't be writed; %s\n", err)
 	}

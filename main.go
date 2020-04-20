@@ -16,8 +16,10 @@ func main() {
 }
 
 func parserLoop() {
-	var actual_vacancies_list []string
-	var previous_vacancies_list []string
+	actual_vacancies_list := parser.GetVacanciesLinksList()
+	
+	previous_vacancies_list := make([]string, len(actual_vacancies_list))
+	copy(previous_vacancies_list, actual_vacancies_list)
 
 	for true {
 		actual_vacancies_list = parser.GetVacanciesLinksList()
@@ -32,7 +34,7 @@ func parserLoop() {
 			}
 		}
 
-		previous_vacancies_list = append(previous_vacancies_list, actual_vacancies_list...)
+		copy(previous_vacancies_list, actual_vacancies_list)
 
 		time.Sleep(1 * time.Minute)
 	}
